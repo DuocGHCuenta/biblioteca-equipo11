@@ -1,0 +1,75 @@
+package cl.duoc.segundo_modulo_api.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import cl.duoc.segundo_modulo_api.model.Libro;
+
+import jakarta.transaction.Transactional;
+
+@Repository
+@Transactional
+public class LibroRepository {
+    private List <Libro> listaLibros = new ArrayList <>();
+
+    public List<Libro> findAll(){
+        return listaLibros;
+    }
+
+    public Libro findById(int id){
+        for (Libro librofor : listaLibros){
+            if (librofor.getId() == id){
+                return librofor;
+            }
+        }
+        return null;
+    }
+
+
+    public Libro findByIsbn(String isbn){
+        for (Libro libroisbn : listaLibros){
+            if (libroisbn.getIsbn().equals (isbn)){
+                return libroisbn;
+            }
+        }
+        return null;
+    }
+
+
+    public Boolean deleteById(int id){
+        for (Libro librodel : listaLibros){
+            if (librodel.getId() == id){
+                listaLibros.remove(librodel);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public Libro save(Libro libro){
+        if (libro.getId() == null){
+            int lastId = listaLibros.size() + 1;
+            libro.setId(lastId);
+            listaLibros.add(libro);
+            return libro;
+        }
+
+        Libro libroEncontrado = findById(libro.getId());
+        if (libroEncontrado == null) return null;
+
+        libroEncontrado.setTitulo(libro.getTitulo());
+        libroEncontrado.setIsbn(libro.getIsbn());
+        libroEncontrado.setId_cliente(libro.getId_cliente());
+        libroEncontrado.setFecha_prestamiento(libro.getFecha_prestamiento());
+        libroEncontrado.setFecha_devolucion(libro.getFecha_devolucion());
+        libroEncontrado.setVeces_prestada(libro.getVeces_prestada());
+        libroEncontrado.setCondicion_antes_entrega(libro.getCondicion_antes_entrega());
+        libroEncontrado.setCondicion_devolucion(libro.getCondicion_devolucion());
+
+        return libroEncontrado;
+    }
+
+}
