@@ -3,6 +3,9 @@ package cl.duoc.segundo_modulo_api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.duoc.segundo_modulo_api.dto.LibroCreateDTO;
+import cl.duoc.segundo_modulo_api.dto.LibroDTO;
 import cl.duoc.segundo_modulo_api.model.Libro;
 import cl.duoc.segundo_modulo_api.service.LibroService;
+import jakarta.validation.Valid;
 
 // @RequiredArgsController
 //@Autowired
@@ -62,4 +68,32 @@ public class LibroController {
         libro.setId(id); //libro.setId(id);
         return libroService.save(libro);
     }
+
+
+    // Este DELETE esta aqui ahora
+    @DeleteMapping("/{id}")
+    public Boolean deleteById(@PathVariable Integer id){
+        return libroService.deleteById(id);
+    }
+
+
+
+
+
+
+
+    // Devuelve LibroDTO (salida)
+    @GetMapping("/dto/{id}")
+    public ResponseEntity<LibroDTO> getLibro(@PathVariable Integer id) {
+        return ResponseEntity.ok(libroService.findDtoById(id));
+    }
+
+    // Recibe LibroCreateDTO (entrada) y devuelve LibroDTO (salida)
+    @PostMapping("/dto")
+    public ResponseEntity<LibroDTO> crearLibro(
+            @Valid @RequestBody LibroCreateDTO dto) {
+        LibroDTO creado = libroService.crearLibro(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+    }
+
 }

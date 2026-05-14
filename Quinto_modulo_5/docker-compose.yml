@@ -11,7 +11,7 @@ services:
       MYSQL_USER: desarrollador
       MYSQL_PASSWORD: password_seguro_123
     ports:
-      - "3310:3310"
+      - "3310:3306"
     networks:
       - red_interna_proyecto
     volumes:
