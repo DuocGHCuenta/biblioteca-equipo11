@@ -16,9 +16,9 @@ public class LibroDTO {
     private String titulo;
     private String isbn;
 
-    private int cantidad_copias;
-    private String ubicacion_pasillo;
-    private String ubicacion_estante;
-    private String ubicacion_nivel;
+    private int cantidadCopias;
+    private String ubicacionPasillo;
+    private String ubicacionEstante;
+    private String ubicacionNivel;
 
 }

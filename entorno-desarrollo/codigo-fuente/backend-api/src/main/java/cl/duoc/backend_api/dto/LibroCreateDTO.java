@@ -25,15 +25,15 @@ public class LibroCreateDTO {
 
     @NotNull(message = "Se debe confirmar cuantas copias tiene el libro")
     @Min(value = 1, message = "Debe haber al menos 1 copia del libro")
-    private Integer cantidad_copias;
+    private Integer cantidadCopias;
 
     @NotBlank(message = "Se debe informar en que pasillo esta el libro")
-    private String ubicacion_pasillo;
+    private String ubicacionPasillo;
 
     @NotBlank(message = "Se debe informar en que estante esta el libro")
-    private String ubicacion_estante;
+    private String ubicacionEstante;
 
     @NotBlank(message = "Se debe informar en que nivel esta el libro")
-    private String ubicacion_nivel;
+    private String ubicacionNivel;
 
 }

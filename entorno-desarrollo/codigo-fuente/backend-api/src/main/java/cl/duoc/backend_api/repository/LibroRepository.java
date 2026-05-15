@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 import cl.duoc.backend_api.model.Libro;
 import jakarta.transaction.Transactional;
 
+// @Repository indica a Spring que este componente se encarga de la base de datos.
 @Repository
+
+// @Transactional indica que las operaciones de la base de datos dentro de esta clase se ejecutar como una transaccion segura.
 @Transactional
 public class LibroRepository {
     private List <Libro> listaLibros = new ArrayList <>();
@@ -62,10 +65,10 @@ public class LibroRepository {
         libroEncontrado.setTitulo(libro.getTitulo());
         libroEncontrado.setIsbn(libro.getIsbn());
 
-        libroEncontrado.setCantidad_copias(libro.getCantidad_copias());
-        libroEncontrado.setUbicacion_pasillo(libro.getUbicacion_pasillo());
-        libroEncontrado.setUbicacion_estante(libro.getUbicacion_estante());
-        libroEncontrado.setUbicacion_nivel(libro.getUbicacion_nivel());
+        libroEncontrado.setCantidadCopias(libro.getCantidadCopias());
+        libroEncontrado.setUbicacionPasillo(libro.getUbicacionPasillo());
+        libroEncontrado.setUbicacionEstante(libro.getUbicacionEstante());
+        libroEncontrado.setUbicacionNivel(libro.getUbicacionNivel());
 
         return libroEncontrado;
     }

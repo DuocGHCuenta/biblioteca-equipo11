@@ -11,7 +11,10 @@ import cl.duoc.backend_api.model.Libro;
 import cl.duoc.backend_api.repository.LibroRepository;
 import lombok.RequiredArgsConstructor;
 
+// @Service indica que esta clase contiene la lógica de negocio.
 @Service
+
+// @RequiredArgsConstructor indica a Lombok que genere automaticamente un constructor con los atributos obligatorios de la clase.
 @RequiredArgsConstructor
 
 public class LibroService {
@@ -43,10 +46,10 @@ public class LibroService {
             l1.getId(),
             l1.getTitulo(),
             l1.getIsbn(),
-            l1.getCantidad_copias(),
-            l1.getUbicacion_pasillo(),
-            l1.getUbicacion_estante(),
-            l1.getUbicacion_nivel()
+            l1.getCantidadCopias(),
+            l1.getUbicacionPasillo(),
+            l1.getUbicacionEstante(),
+            l1.getUbicacionNivel()
         );
     }
 
@@ -74,10 +77,10 @@ public LibroDTO crearLibro(LibroCreateDTO dto) {
     Libro p = new Libro();
     p.setTitulo(dto.getTitulo());
     p.setIsbn(dto.getIsbn());
-    p.setCantidad_copias(dto.getCantidad_copias());
-    p.setUbicacion_pasillo(dto.getUbicacion_pasillo());
-    p.setUbicacion_estante(dto.getUbicacion_estante());
-    p.setUbicacion_nivel(dto.getUbicacion_nivel());
+    p.setCantidadCopias(dto.getCantidadCopias());
+    p.setUbicacionPasillo(dto.getUbicacionPasillo());
+    p.setUbicacionEstante(dto.getUbicacionEstante());
+    p.setUbicacionNivel(dto.getUbicacionNivel());
     // El id, createdAt y otros campos internos los maneja JPA/BD
 
 
@@ -89,10 +92,10 @@ public LibroDTO crearLibro(LibroCreateDTO dto) {
         guardado.getId(),
         guardado.getTitulo(),
         guardado.getIsbn(),
-        guardado.getCantidad_copias(),
-        guardado.getUbicacion_pasillo(),
-        guardado.getUbicacion_estante(),
-        guardado.getUbicacion_nivel()
+        guardado.getCantidadCopias(),
+        guardado.getUbicacionPasillo(),
+        guardado.getUbicacionEstante(),
+        guardado.getUbicacionNivel()
     );
 }
     
