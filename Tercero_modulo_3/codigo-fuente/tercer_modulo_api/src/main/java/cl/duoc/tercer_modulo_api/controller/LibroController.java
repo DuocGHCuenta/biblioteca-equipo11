@@ -2,7 +2,7 @@ package cl.duoc.tercer_modulo_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,19 +19,19 @@ import cl.duoc.tercer_modulo_api.dto.LibroDTO;
 import cl.duoc.tercer_modulo_api.model.Libro;
 import cl.duoc.tercer_modulo_api.service.LibroService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-
-
-// @RequiredArgsController
 //@Autowired
 @RestController
+
+@RequiredArgsConstructor
 
 @RequestMapping("/api/v1/compraryvenderlibros")
 public class LibroController {
     
-    @Autowired
+    //@Autowired
 
-    private LibroService libroService;
+    private final LibroService libroService;
 
 
     // tener una lista de todos
@@ -72,11 +72,15 @@ public class LibroController {
     }
 
 
-     // Este DELETE esta aqui ahora
+    // Eliminar un libro
     @DeleteMapping("/{id}")
-    public Boolean deleteById(@PathVariable Integer id){
-        return libroService.deleteById(id);
+    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+
+        libroService.deleteById(id);
+
+        return ResponseEntity.ok("Libro eliminado correctamente");
     }
+
 
 
 

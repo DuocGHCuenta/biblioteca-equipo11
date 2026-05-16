@@ -18,7 +18,7 @@ public class GrupoCulturalCreateDTO {
 
 
     @NotBlank(message = "Se debe dar informacion sobre que tipo de club es")
-    private String tipo_club;
+    private String tipoClub;
 
 
     @NotBlank(message = "Debe haber una descripcion de lo que se trata el club")
@@ -27,14 +27,14 @@ public class GrupoCulturalCreateDTO {
 
 
     @NotBlank(message = "Se debe informacion sobre los horarios del club y el dia en que ocurren")
-    private String fecha_club;
+    private String fechaClub;
 
 
     @NotNull(message = "Se debe saber cuantas personas participan en el club")
-    private int cantidad_participantes;
+    private int cantidadParticipantes;
 
 
     @NotBlank(message = "Se debe informar sobre la ubicacion del grupo o club")
-    private String ubicacion_club;
+    private String ubicacionClub;
 
 }

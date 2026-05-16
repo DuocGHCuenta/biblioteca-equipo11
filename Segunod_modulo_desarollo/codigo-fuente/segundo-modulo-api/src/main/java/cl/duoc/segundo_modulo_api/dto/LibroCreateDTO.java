@@ -21,30 +21,30 @@ public class LibroCreateDTO {
     private String isbn;
 
     @NotBlank(message = "Se debe tener la ID del cliente")
-    private String id_cliente;
+    private String idCliente;
 
     // Fecha cuando el cliente recibe el libro prestado
     @NotBlank(message = "Se debe tener la fecha en que se presto el libro al cliente")   
-    private String fecha_prestamiento;   
+    private String fechaPrestamiento;   
 
 
     // Fecha cuando el cliente debe devolver el libro prestado
     @NotBlank(message = "Se debe tener la fecha limite en que el cliente debe devolver el libro")
-    private String fecha_devolucion;
+    private String fechaDevolucion;
 
 
     // Cuantas veces ha sido prestado.
     @NotNull(message = "Se debe anotar cuantas veces el mismo libro ya ha sido prestado")
-    private int veces_prestada;
+    private int vecesPrestada;
 
 
     // Cual es la condicion del libro despues de prestarlo
     @NotBlank(message = "Se debe tener anotado la condicion del libro antes de ser prestado al cliente")
-    private String condicion_antes_entrega;
+    private String condicionAntesEntrega;
 
 
     @NotBlank(message = "Se debe anotar la condicion del libro despues de ser usado por el cliente")
-    private String condicion_devolucion;
+    private String condicionDevolucion;
 
 
 }

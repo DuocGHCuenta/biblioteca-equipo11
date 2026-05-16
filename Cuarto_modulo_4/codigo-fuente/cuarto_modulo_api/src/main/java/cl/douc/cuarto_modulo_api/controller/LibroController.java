@@ -2,7 +2,6 @@ package cl.douc.cuarto_modulo_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,17 +18,16 @@ import cl.douc.cuarto_modulo_api.dto.LibroDTO;
 import cl.douc.cuarto_modulo_api.model.Libro;
 import cl.douc.cuarto_modulo_api.service.LibroService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-// @RequiredArgsController
+@RequiredArgsConstructor
 //@Autowired
 @RestController
 
 @RequestMapping("/api/v1/repararlibros")
 public class LibroController {
-    
-    @Autowired
 
-    private LibroService libroService;
+    private final LibroService libroService;
 
 
     // tener una lista de todos
@@ -70,11 +68,15 @@ public class LibroController {
     }
 
 
-    // Este DELETE esta aquí ahora
+    // Eliminar un libro
     @DeleteMapping("/{id}")
-    public Boolean deleteById(@PathVariable Integer id){
-        return libroService.deleteById(id);
+    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+
+        libroService.deleteById(id);
+
+        return ResponseEntity.ok("Libro eliminado correctamente");
     }
+
 
 
     

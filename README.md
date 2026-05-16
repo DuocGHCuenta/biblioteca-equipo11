@@ -4,22 +4,38 @@
 
 ## 🔗 Comunicación entre microservicios (Hito 2)
 ## Que microservio necesita del otro
-## Por ejemplo reparar libros necesita el micvroservio de inventario
-El servicio de Citas necesita validar que el paciente exista → llama al servicio de Pacientes.
+## Por ejemplo reparar libros necesita el microservio de inventario
 
-El prestamiento de libros por un plazo necesita validar que los libros esten en la librearia → llama al servicio de Inventario de Libros
+El prestamiento de libros por un plazo necesita validar que los libros esten en la librearia en primer lugar → llama al servicio de Inventario de Libros.
 
-La venta y compra de libros necesita validar si la librearia ya tiene los libro y cuantas copias tiene para ver si → llama al servicio de Inventario de Libros
+La venta y compra de libros necesita validar si la librearia ya tiene el libro y cuantas copias tiene cada uno para ver si vale la pena venderlos o comprar más → llama al servicio de Inventario de Libros
 
-La repacion de libros necesita validar la condicion de los libros que estan en la libreria
+La reparacion de libros necesita validar la condicion de los libros que estan en la libreria porlo que encesita revisar cada libro y sabe donde se ubican → llama al servicio de Inventario de Libros
 
-Los clubs o grupo culturales no necesitan nada de los libros en si, sino neceita el espacio de la librearia en sí por algunas horas.
+Los clubs o grupo culturales no necesitan nada de los libros en si, sino neceita el espacio de la librearia en sí por algunas horas. → No llama a nadie por que no necesita a nadie.
 
 ### Diagrama de dependencias
 [Insertar imagen del diagrama de la Fase 1 con los 5 servicios] 
 ┌─────────────────────────────────────────────────────────┐
 │                                                         │
 │  ┌──────────┐  Feign   ┌──────────┐  Feign  ┌────────┐  
+│  │MODULO 2  ├─────────▶│ servicio ├────────▶│  C     │  
+│  │    A     │          │    B     │         │        │  
+│  └────┬─────┘          └────┬─────┘         └───┬────┘  
+│       │                     │                   │       
+│  ┌────▼─────┐          ┌────▼─────┐          ┌──▼───┐   
+│  │  db_a    │          │  db_b    │          │ db_c │   
+│  └──────────┘          └──────────┘          └──────┘   
+
+    ┌──────────┐  Feign  ┌──────────┐  Feign  ┌────────┐  
+│  │MODULO 3 ├─────────▶│ servicio ├────────▶│  C     │  
+│  │    A     │          │    B     │         │        │  
+│  └────┬─────┘          └────┬─────┘         └───┬────┘  
+│       │                     │                   │       
+│  ┌────▼─────┐          ┌────▼─────┐          ┌──▼───┐   
+│  │  db_a    │          │  db_b    │          │ db_c │   
+│  └──────────┘          └──────────┘          └──────┘   
+┌──────────┐  Feign   ┌──────────┐  Feign  ┌────────┐  
 │  │MODULO 4  ├─────────▶│ servicio ├────────▶│  C     │  
 │  │    A     │          │    B     │         │        │  
 │  └────┬─────┘          └────┬─────┘         └───┬────┘  

@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 public class GrupoCulturalService {
     //@Autowired
-    private GrupoCulturalRepository grupoCulturalRepository;
+    private final GrupoCulturalRepository grupoCulturalRepository;
 
     public List <GrupoCultural> findAll(){
         return grupoCulturalRepository.findAll();
@@ -25,17 +25,24 @@ public class GrupoCulturalService {
 
 
     public GrupoCultural findById(Integer id){
-        return grupoCulturalRepository.findById(id);
+        return grupoCulturalRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Club no encontrado"));
     }
 
 
     public GrupoCultural findByNombre(String nombre){
-        return grupoCulturalRepository.findByNombre(nombre);
+        return grupoCulturalRepository.findByNombre(nombre)
+        .orElseThrow(() -> new RuntimeException("Club no encontrado"));
     }
 
 
-    public Boolean deleteById(Integer id){
-        return grupoCulturalRepository.deleteById(id);
+     public void deleteById(Integer id) {
+
+        if (!grupoCulturalRepository.existsById(id)) {
+            throw new RuntimeException("Club no encontrado");
+        }
+
+        grupoCulturalRepository.deleteById(id);
     }
 
 
@@ -50,23 +57,18 @@ public class GrupoCulturalService {
 
     public GrupoCulturalDTO findDtoById(Integer id) {
 
-        GrupoCultural l1 = grupoCulturalRepository.findById(id);
+        GrupoCultural l1 = grupoCulturalRepository.findById(id)
 
-         if (l1 == null){
-            throw new RuntimeException("Club no encontrado");
-    }
-
-            // throw new RecursoNoEncontradoException("Libro no encontrado");
-            //.orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
+        .orElseThrow(() -> new RuntimeException("Club no encontrado"));
 
         return new GrupoCulturalDTO(
             l1.getId(),
             l1.getNombre(),
-            l1.getTipo_club(),
+            l1.getTipoClub(),
             l1.getDescripcion(),
-            l1.getFecha_club(),
-            l1.getCantidad_participantes(),
-            l1.getUbicacion_club()
+            l1.getFechaClub(),
+            l1.getCantidadParticipantes(),
+            l1.getUbicacionClub()
         );
     }
 
@@ -76,11 +78,11 @@ public class GrupoCulturalService {
     // 1. Convertir DTO de entrada a entidad
     GrupoCultural p = new GrupoCultural();
     p.setNombre(dto.getNombre());
-    p.setTipo_club(dto.getTipo_club());
+    p.setTipoClub(dto.getTipoClub());
     p.setDescripcion(dto.getDescripcion());
-    p.setFecha_club(dto.getFecha_club());
-    p.setCantidad_participantes(dto.getCantidad_participantes());
-    p.setUbicacion_club(dto.getUbicacion_club());
+    p.setFechaClub(dto.getFechaClub());
+    p.setCantidadParticipantes(dto.getCantidadParticipantes());
+    p.setUbicacionClub(dto.getUbicacionClub());
 
 
     // El id, createdAt y otros campos internos los maneja JPA/BD
@@ -92,11 +94,11 @@ public class GrupoCulturalService {
     return new GrupoCulturalDTO(
         guardado.getId(),
         guardado.getNombre(),
-        guardado.getTipo_club(),
+        guardado.getTipoClub(),
         guardado.getDescripcion(),
-        guardado.getFecha_club(),
-        guardado.getCantidad_participantes(),
-        guardado.getUbicacion_club()
+        guardado.getFechaClub(),
+        guardado.getCantidadParticipantes(),
+        guardado.getUbicacionClub()
         
     );
 }

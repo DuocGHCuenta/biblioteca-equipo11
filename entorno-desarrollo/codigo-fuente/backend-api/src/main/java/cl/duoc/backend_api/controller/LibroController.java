@@ -2,97 +2,90 @@ package cl.duoc.backend_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cl.duoc.backend_api.dto.LibroCreateDTO;
 import cl.duoc.backend_api.dto.LibroDTO;
 import cl.duoc.backend_api.model.Libro;
 import cl.duoc.backend_api.service.LibroService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-//@RequiredArgsController
-//@Autowired
-@Valid
 @RestController
-
 @RequestMapping("/api/v1/inventariolibros")
+
+@RequiredArgsConstructor
 public class LibroController {
-    
-    @Autowired
 
-    private LibroService libroService;
+    private final LibroService libroService;
 
-
-    // tener una lista de todos
+    // Obtener una lista de todos los libros
     @GetMapping()
-    public List <Libro> findAll(){
+    public List<Libro> findAll(){
         return libroService.findAll();
-
     }
 
+    // Buscar el libro por la id
+    @GetMapping("/{id}")
+    public Libro findById(@PathVariable Integer id){
+        return libroService.findById(id);
+    }
 
-    // Buscar y obtener por la id del libro
-    @GetMapping("{id}")
-        public Libro findById (@PathVariable Integer id){
-            return libroService.findById(id);
-        }
+    // Buscar libro por su ISBN
+    @GetMapping("/isbn/{isbn}")
+    public Libro findByIsbn(@PathVariable String isbn){
+        return libroService.findByIsbn(isbn);
+    }
 
-
-        // Encontrarlo por el isbn del libro
-     @GetMapping("/isbn/{isbn}")
-        public Libro findByIsbn (@PathVariable String isbn){
-            return libroService.findByIsbn(isbn);
-        }   
-
-    
-
-    // Agregar un libro a la libreria
+    // Crear un libro 
     @PostMapping
     public Libro createLibro(@RequestBody Libro libro){
-        libro.setId(null); // libro.setId(null);
+
+        libro.setId(null);
+
         return libroService.save(libro);
     }
 
-
+    // Actualizar un libro
     @PutMapping("/{id}")
-    public Libro updateLibro(@PathVariable Integer id, @RequestBody Libro libro){
-        libro.setId(id); //libro.setId(id);
+    public Libro updateLibro(
+            @PathVariable Integer id,
+            @RequestBody Libro libro){
+
+        libro.setId(id);
+
         return libroService.save(libro);
     }
 
-
-    // Este DELETE esta aqui ahora
+    // Eliminar un libro
     @DeleteMapping("/{id}")
-    public Boolean deleteById(@PathVariable Integer id){
-        return libroService.deleteById(id);
+    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+
+        libroService.deleteById(id);
+
+        return ResponseEntity.ok("Libro eliminado correctamente");
     }
 
-
-
-
-
- // Devuelve PacienteDTO (salida)
+    // DTO GET
     @GetMapping("/dto/{id}")
-    public ResponseEntity<LibroDTO> getLibro(@PathVariable Integer id) {
-        return ResponseEntity.ok(libroService.findDtoById(id));
+    public ResponseEntity<LibroDTO> getLibro(@PathVariable Integer id){
+
+        return ResponseEntity.ok(
+                libroService.findDtoById(id)
+        );
     }
 
-    // Recibe LibroCreateDTO (entrada) y devuelve LibroDTO (salida)
+    // DTO POST
     @PostMapping("/dto")
     public ResponseEntity<LibroDTO> crearLibro(
-            @Valid @RequestBody LibroCreateDTO dto) {
-        LibroDTO creado = libroService.crearLibro(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
-    }
+            @Valid @RequestBody LibroCreateDTO dto){
 
+        LibroDTO creado = libroService.crearLibro(dto);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(creado);
+    }
 }

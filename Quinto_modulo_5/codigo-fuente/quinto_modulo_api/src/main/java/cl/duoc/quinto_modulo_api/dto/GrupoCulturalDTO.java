@@ -14,10 +14,10 @@ public class GrupoCulturalDTO {
 
     private Integer id;
     private String nombre;
-    private String tipo_club;
+    private String tipoClub;
     private String descripcion;
-    private String fecha_club;
-    private int cantidad_participantes;
-    private String ubicacion_club;
+    private String fechaClub;
+    private int cantidadParticipantes;
+    private String ubicacionClub;
 
 }

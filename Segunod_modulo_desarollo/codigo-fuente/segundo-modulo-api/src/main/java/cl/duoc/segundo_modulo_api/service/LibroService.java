@@ -2,7 +2,7 @@ package cl.duoc.segundo_modulo_api.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.duoc.segundo_modulo_api.dto.LibroCreateDTO;
@@ -16,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 
 public class LibroService {
-    @Autowired
-    private LibroRepository libroRepository;
+    //@Autowired
+    private final LibroRepository libroRepository;
 
     public List <Libro> findAll(){
         return libroRepository.findAll();
@@ -25,19 +25,26 @@ public class LibroService {
 
 
     public Libro findById(Integer id){
-        return libroRepository.findById(id);
+        return libroRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
     
 
 
     public Libro findByIsbn(String isbn){
-        return libroRepository.findByIsbn(isbn);
+        return libroRepository.findByIsbn(isbn)
+            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
 
-    public Boolean deleteById(Integer id){
-        return libroRepository.deleteById(id);
+     public void deleteById(Integer id) {
+
+        if (!libroRepository.existsById(id)) {
+            throw new RuntimeException("Libro no encontrado");
+        }
+
+        libroRepository.deleteById(id);
     }
 
 
@@ -50,16 +57,12 @@ public class LibroService {
 
 
 
+    public LibroDTO findDtoById(Integer id) {
 
+        Libro l1 = libroRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
 
-
-public LibroDTO findDtoById(Integer id) {
-
-        Libro l1 = libroRepository.findById(id);
-
-         if (l1 == null){
-            throw new RuntimeException("Libro no encontrado");
-    }
+    
 
             // throw new RecursoNoEncontradoException("Libro no encontrado");
             //.orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
@@ -68,47 +71,47 @@ public LibroDTO findDtoById(Integer id) {
             l1.getId(),
             l1.getTitulo(),
             l1.getIsbn(),
-            l1.getId_cliente(),
-            l1.getFecha_prestamiento(),
-            l1.getFecha_devolucion(),
-            l1.getVeces_prestada(),
-            l1.getCondicion_antes_entrega(),
-            l1.getCondicion_devolucion()
+            l1.getIdCliente(),
+            l1.getFechaPrestamiento(),
+            l1.getFechaDevolucion(),
+            l1.getVecesPrestada(),
+            l1.getCondicionAntesEntrega(),
+            l1.getCondicionDevolucion()
         );
     }
 
 
     public LibroDTO crearLibro(LibroCreateDTO dto) {
 
-    // 1. Convertir DTO de entrada a entidad
-    Libro p = new Libro();
-    p.setTitulo(dto.getTitulo());
-    p.setIsbn(dto.getIsbn());
-    p.setId_cliente(dto.getId_cliente());
-    p.setFecha_prestamiento(dto.getFecha_prestamiento());
-    p.setFecha_devolucion(dto.getFecha_devolucion());
-    p.setVeces_prestada(dto.getVeces_prestada());
-    p.setCondicion_antes_entrega(dto.getCondicion_antes_entrega());
-    p.setCondicion_devolucion(dto.getCondicion_devolucion());
-  
+        // 1. Convertir DTO de entrada a entidad
+        Libro p = new Libro();
+        p.setTitulo(dto.getTitulo());
+        p.setIsbn(dto.getIsbn());
+        p.setIdCliente(dto.getIdCliente());
+        p.setFechaPrestamiento(dto.getFechaPrestamiento());
+        p.setFechaDevolucion(dto.getFechaDevolucion());
+        p.setVecesPrestada(dto.getVecesPrestada());
+        p.setCondicionAntesEntrega(dto.getCondicionAntesEntrega());
+        p.setCondicionDevolucion(dto.getCondicionDevolucion());
+    
 
-    // El id, createdAt y otros campos internos los maneja JPA/BD
+        // El id, createdAt y otros campos internos los maneja JPA/BD
 
-    // 2. Persistir en la base de datos
-    Libro guardado = libroRepository.save(p);
+        // 2. Persistir en la base de datos
+        Libro guardado = libroRepository.save(p);
 
-    // 3. Convertir la entidad guardada a DTO de salida (ya con id)
-    return new LibroDTO(
-        guardado.getId(),
-        guardado.getTitulo(),
-        guardado.getIsbn(),
-        guardado.getId_cliente(),
-        guardado.getFecha_prestamiento(),
-        guardado.getFecha_devolucion(),
-        guardado.getVeces_prestada(),
-        guardado.getCondicion_antes_entrega(),
-        guardado.getCondicion_devolucion()
-    );
+        // 3. Convertir la entidad guardada a DTO de salida (ya con id)
+        return new LibroDTO(
+            guardado.getId(),
+            guardado.getTitulo(),
+            guardado.getIsbn(),
+            guardado.getIdCliente(),
+            guardado.getFechaPrestamiento(),
+            guardado.getFechaDevolucion(),
+            guardado.getVecesPrestada(),
+            guardado.getCondicionAntesEntrega(),
+            guardado.getCondicionDevolucion()
+        );
 }
 
 

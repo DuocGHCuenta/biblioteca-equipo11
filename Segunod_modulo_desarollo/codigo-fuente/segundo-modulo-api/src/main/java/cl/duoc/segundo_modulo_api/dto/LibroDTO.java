@@ -14,19 +14,19 @@ public class LibroDTO {
     private String titulo;
     private String isbn;
 
-    private String id_cliente;
+    private String idCliente;
 
     // Fecha cuando el cliente recibe el libro prestado
-    private String fecha_prestamiento;   
+    private String fechaPrestamiento;   
 
     // Fecha cuando el cliente debe devolver el libro prestado
-    private String fecha_devolucion;
+    private String fechaDevolucion;
 
     // Cuantas veces ha sido prestado.
-    private int veces_prestada;
+    private int vecesPrestada;
 
     // Cual es la condicion del libro despues de prestarlo
-    private String condicion_antes_entrega;
-    private String condicion_devolucion;
+    private String condicionAntesEntrega;
+    private String condicionDevolucion;
 
 }

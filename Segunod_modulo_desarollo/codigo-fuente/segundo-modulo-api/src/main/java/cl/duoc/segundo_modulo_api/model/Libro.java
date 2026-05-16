@@ -1,31 +1,50 @@
 package cl.duoc.segundo_modulo_api.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// La anotación @Data es de Lombok y genera automáticamente los métodos getter, setter y constructores.
 @Data
+
+// @AllArgsConstructor hace que el Lombok crea automaticamente un constructor con todos los atributos de la clase.
 @AllArgsConstructor
+
+// @NoArgsConstructor hace que el Lombok crea automaticamente un constructor vacío, sin ningun parámetro.
 @NoArgsConstructor
+
+// La anotación @Entity le dice a Spring que esta clase se convertirá en una tabla en la base de datos.
+@Entity
 
 // Esto es para prestar libro por un tiempo limitado
 public class Libro {
+
+    // @Id indica que esta variable será la clave primaria (identificador único) de la tabla.
+    @Id
+
+    // @GeneratedValue indica que la base de datos asignará este número automáticamente de forma secuencial.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
     private String titulo;
     private String isbn;
 
-    private String id_cliente;
+    private String idCliente;
 
     // Fecha cuando el cliente recibe el libro prestado
-    private String fecha_prestamiento;   
+    private String fechaPrestamiento;   
 
     // Fecha cuando el cliente debe devolver el libro prestado
-    private String fecha_devolucion;
+    private String fechaDevolucion;
 
     // Cuantas veces ha sido prestado.
-    private int veces_prestada;
+    private int vecesPrestada;
 
     // Cual es la condicion del libro despues de prestarlo
-    private String condicion_antes_entrega;
-    private String condicion_devolucion;
+    private String condicionAntesEntrega;
+    private String condicionDevolucion;
 }

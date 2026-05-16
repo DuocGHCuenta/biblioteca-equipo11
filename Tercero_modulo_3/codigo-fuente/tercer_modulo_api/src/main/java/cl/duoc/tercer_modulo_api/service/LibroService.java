@@ -2,7 +2,7 @@ package cl.duoc.tercer_modulo_api.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.duoc.tercer_modulo_api.dto.LibroCreateDTO;
@@ -15,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 
 public class LibroService {
-    @Autowired
-    private LibroRepository libroRepository;
+    //@Autowired
+    private final LibroRepository libroRepository;
 
     public List <Libro> findAll(){
         return libroRepository.findAll();
@@ -24,18 +24,26 @@ public class LibroService {
 
 
     public Libro findById(Integer id){
-        return libroRepository.findById(id);
+        return libroRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
 
     public Libro findByIsbn(String isbn){
-        return libroRepository.findByIsbn(isbn);
+        return libroRepository.findByIsbn(isbn)
+            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
 
-    public Boolean deleteById(Integer id){
-        return libroRepository.deleteById(id);
+     public void deleteById(Integer id) {
+
+        if (!libroRepository.existsById(id)) {
+            throw new RuntimeException("Libro no encontrado");
+        }
+
+        libroRepository.deleteById(id);
     }
+
 
 
     public Libro save(Libro libro){
@@ -47,11 +55,9 @@ public class LibroService {
 
     public LibroDTO findDtoById(Integer id) {
 
-        Libro l1 = libroRepository.findById(id);
+        Libro l1 = libroRepository.findById(id)
 
-         if (l1 == null){
-            throw new RuntimeException("Libro no encontrado");
-    }
+        .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
 
             // throw new RecursoNoEncontradoException("Libro no encontrado");
             //.orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));

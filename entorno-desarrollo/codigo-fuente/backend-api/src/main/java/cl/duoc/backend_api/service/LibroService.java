@@ -2,7 +2,6 @@ package cl.duoc.backend_api.service;
 
 import java.util.List;
 
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.duoc.backend_api.dto.LibroCreateDTO;
@@ -16,87 +15,86 @@ import lombok.RequiredArgsConstructor;
 
 // @RequiredArgsConstructor indica a Lombok que genere automaticamente un constructor con los atributos obligatorios de la clase.
 @RequiredArgsConstructor
-
 public class LibroService {
-    //@Autowired
-    private LibroRepository libroRepository;
 
-    public List <Libro> findAll(){
+    private final LibroRepository libroRepository;
+
+    // Obtener todos los libros
+    public List<Libro> findAll() {
         return libroRepository.findAll();
     }
 
+    // Buscar libro por ID
+    public Libro findById(Integer id) {
 
-    public Libro findById(Integer id){
-        return libroRepository.findById(id);
+        return libroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
-
+    // Buscar libro DTO por ID
     public LibroDTO findDtoById(Integer id) {
 
-        Libro l1 = libroRepository.findById(id);
-
-         if (l1 == null){
-            throw new RuntimeException("Libro no encontrado");
-    }
-
-            // throw new RecursoNoEncontradoException("Libro no encontrado");
-            //.orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
+        Libro l1 = libroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
 
         return new LibroDTO(
-            l1.getId(),
-            l1.getTitulo(),
-            l1.getIsbn(),
-            l1.getCantidadCopias(),
-            l1.getUbicacionPasillo(),
-            l1.getUbicacionEstante(),
-            l1.getUbicacionNivel()
+                l1.getId(),
+                l1.getTitulo(),
+                l1.getIsbn(),
+                l1.getCantidadCopias(),
+                l1.getUbicacionPasillo(),
+                l1.getUbicacionEstante(),
+                l1.getUbicacionNivel()
         );
     }
 
+    // Buscar libro por ISBN
+    public Libro findByIsbn(String isbn) {
 
-    public Libro findByIsbn(String isbn){
-        return libroRepository.findByIsbn(isbn);
+        return libroRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
     }
 
+    // Eliminar libro por ID
+    public void deleteById(Integer id) {
 
-    public Boolean deleteById(Integer id){
-        return libroRepository.deleteById(id);
+        if (!libroRepository.existsById(id)) {
+            throw new RuntimeException("Libro no encontrado");
+        }
+
+        libroRepository.deleteById(id);
     }
 
-
-    public Libro save(Libro libro){
+    // Guardar libro
+    public Libro save(Libro libro) {
         return libroRepository.save(libro);
     }
 
+    // Crear libro usando DTO
+    public LibroDTO crearLibro(LibroCreateDTO dto) {
 
+        // Convertir DTO a entidad
+        Libro p = new Libro();
 
-    // POST /api/libros       /api/v1/inventariolibros
-public LibroDTO crearLibro(LibroCreateDTO dto) {
+        p.setTitulo(dto.getTitulo());
+        p.setIsbn(dto.getIsbn());
+        p.setCantidadCopias(dto.getCantidadCopias());
+        p.setUbicacionPasillo(dto.getUbicacionPasillo());
+        p.setUbicacionEstante(dto.getUbicacionEstante());
+        p.setUbicacionNivel(dto.getUbicacionNivel());
 
-    // 1. Convertir DTO de entrada a entidad
-    Libro p = new Libro();
-    p.setTitulo(dto.getTitulo());
-    p.setIsbn(dto.getIsbn());
-    p.setCantidadCopias(dto.getCantidadCopias());
-    p.setUbicacionPasillo(dto.getUbicacionPasillo());
-    p.setUbicacionEstante(dto.getUbicacionEstante());
-    p.setUbicacionNivel(dto.getUbicacionNivel());
-    // El id, createdAt y otros campos internos los maneja JPA/BD
+        // Guardar en BD
+        Libro guardado = libroRepository.save(p);
 
-
-    // 2. Persistir en la base de datos
-    Libro guardado = libroRepository.save(p);
-
-    // 3. Convertir la entidad guardada a DTO de salida (ya con id)
-    return new LibroDTO(
-        guardado.getId(),
-        guardado.getTitulo(),
-        guardado.getIsbn(),
-        guardado.getCantidadCopias(),
-        guardado.getUbicacionPasillo(),
-        guardado.getUbicacionEstante(),
-        guardado.getUbicacionNivel()
-    );
-}
-    
+        // Convertir entidad a DTO
+        return new LibroDTO(
+                guardado.getId(),
+                guardado.getTitulo(),
+                guardado.getIsbn(),
+                guardado.getCantidadCopias(),
+                guardado.getUbicacionPasillo(),
+                guardado.getUbicacionEstante(),
+                guardado.getUbicacionNivel()
+        );
+    }
 }

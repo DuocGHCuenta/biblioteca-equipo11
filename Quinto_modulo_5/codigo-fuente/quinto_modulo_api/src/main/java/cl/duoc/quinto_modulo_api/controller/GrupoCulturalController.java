@@ -2,7 +2,7 @@ package cl.duoc.quinto_modulo_api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,17 +19,18 @@ import cl.duoc.quinto_modulo_api.dto.GrupoCulturalDTO;
 import cl.duoc.quinto_modulo_api.model.GrupoCultural;
 import cl.duoc.quinto_modulo_api.service.GrupoCulturalService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
-// @RequiredArgsController
+@RequiredArgsConstructor
 //@Autowired
 @RestController
 
 @RequestMapping("/api/v1/grupoculturalclub")
 public class GrupoCulturalController {
     
-    @Autowired
+    //@Autowired
 
-    private GrupoCulturalService grupoCulturalService;
+    private final GrupoCulturalService grupoCulturalService;
 
 
     // tener una lista de todos
@@ -70,10 +71,13 @@ public class GrupoCulturalController {
     }
 
 
-    // Este DELETE esta aquí ahora
+    // Eliminar un club
     @DeleteMapping("/{id}")
-    public Boolean deleteById(@PathVariable Integer id){
-        return grupoCulturalService.deleteById(id);
+    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+
+        grupoCulturalService.deleteById(id);
+
+        return ResponseEntity.ok("Club eliminado correctamente");
     }
 
 
