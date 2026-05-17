@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - red_interna_proyecto
+      - backend-net_proyecto_fullstack
     volumes:
       - persistencia_db:/var/lib/mysql
 
@@ -28,7 +28,7 @@ services:
     depends_on:
       - db-servicio
     networks:
-      - red_interna_proyecto
+      - backend-net_proyecto_fullstack
     # El comando 'tail -f /dev/null' es un truco técnico.
     # Obliga al contenedor a quedarse encendido de forma permanente 
     # en estado de espera, para que podamos entrar a él a programar.
@@ -40,7 +40,8 @@ services:
     working_dir: /app
 
 networks:
-  red_interna_proyecto:
+  backend-net_proyecto_fullstack:
+    external: true
 
 volumes:
   persistencia_db:

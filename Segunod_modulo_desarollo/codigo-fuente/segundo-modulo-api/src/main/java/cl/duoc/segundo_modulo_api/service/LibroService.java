@@ -5,8 +5,10 @@ import java.util.List;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cl.duoc.segundo_modulo_api.client.LibroInventarioClient;
 import cl.duoc.segundo_modulo_api.dto.LibroCreateDTO;
 import cl.duoc.segundo_modulo_api.dto.LibroDTO;
+import cl.duoc.segundo_modulo_api.dto.LibroInventarioDTO;
 import cl.duoc.segundo_modulo_api.model.Libro;
 import cl.duoc.segundo_modulo_api.repository.LibroRepository;
 
@@ -18,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 public class LibroService {
     //@Autowired
     private final LibroRepository libroRepository;
+
+    private final LibroInventarioClient libroInventarioClient;
 
     public List <Libro> findAll(){
         return libroRepository.findAll();
@@ -82,6 +86,15 @@ public class LibroService {
 
 
     public LibroDTO crearLibro(LibroCreateDTO dto) {
+
+
+            // Llamada al microservicio Inventario
+        LibroInventarioDTO libroInventario =
+                libroInventarioClient.obtenerLibro(1);
+
+        System.out.println("Libro encontrado: "
+                + libroInventario.getTitulo());
+
 
         // 1. Convertir DTO de entrada a entidad
         Libro p = new Libro();
