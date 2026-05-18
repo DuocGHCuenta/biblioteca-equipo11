@@ -26,7 +26,7 @@
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
+	<ties>
 		<java.version>21</java.version>
 	</properties>
 	<dependencyManagement>

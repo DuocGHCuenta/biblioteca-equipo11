@@ -18,6 +18,8 @@ public class LibroService {
     //@Autowired
     private final LibroRepository libroRepository;
 
+    //private final libroInventarioClient libroInventarioClient;
+
     public List <Libro> findAll(){
         return libroRepository.findAll();
     }

@@ -1,8 +1,14 @@
 package cl.duoc.segundo_modulo_api.service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
-//import org.springframework.beans.factory.annotation.Autowired;
+//import org.hibernate.validator.internal.util.logging.LoggerFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.duoc.segundo_modulo_api.client.LibroInventarioClient;
@@ -12,12 +18,18 @@ import cl.duoc.segundo_modulo_api.dto.LibroInventarioDTO;
 import cl.duoc.segundo_modulo_api.model.Libro;
 import cl.duoc.segundo_modulo_api.repository.LibroRepository;
 
+//import feign.FeignException;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 
 public class LibroService {
+
+    //private static final Logger log = LoggerFactory.getLogger(LibroService.class);
+    private static final Logger log = LoggerFactory.getLogger(LibroService.class);
+
     //@Autowired
     private final LibroRepository libroRepository;
 
@@ -125,7 +137,24 @@ public class LibroService {
             guardado.getCondicionAntesEntrega(),
             guardado.getCondicionDevolucion()
         );
+
+
+
+        // Antes de la llamada externa
+    log.info("Solicitando libro id={} al servicio inventario libros", id);
+
+    // Cuando llega la respuesta
+    log.info("Paciente recibido: id={}, nombre={}", libro.getId(), libro.getNombre());
+
+    // Cuando falla
+    log.warn("Servicio Pacientes respondió con error: {}", e.getMessage());
+
+    // Eventos de negocio
+    log.info("Cita creada exitosamente: id={}", libro.getId());
+
 }
+
+
 
 
 }
