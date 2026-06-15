@@ -25,7 +25,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor // esto esta subrayado en rojo y todo esto tiene 42 errores.
+
+@RequiredArgsConstructor // 
 //@Autowired
 
 @Tag(
@@ -48,6 +49,7 @@ public class LibroController {
     @ApiResponse(responseCode = "200", description = "Lista de libros obtenida exitosamente")
     @GetMapping()
     public List <Libro> findAll(){
+
         return libroService.findAll();
 
     }
@@ -62,8 +64,11 @@ public class LibroController {
         @ApiResponse(responseCode = "200", description = "Libro encontrado"),
         @ApiResponse(responseCode = "404", description = "Libro no encontrado")
     })
-    @GetMapping("{id}")
-        public Libro findById (@PathVariable Integer id @Parameter(description = "ID del libro", required = true)){
+    @GetMapping("/{id}")
+        public Libro findById(
+            @Parameter(description = "ID del libro", required = true)
+            @PathVariable Integer id ){
+
             return libroService.findById(id);
         }
 
@@ -78,7 +83,10 @@ public class LibroController {
         @ApiResponse(responseCode = "404", description = "Libro no encontrado")
     })
     @GetMapping("/isbn/{isbn}")
-        public Libro findByIsbn (@PathVariable String isbn @Parameter(description = "codigo ISBN del libro", required = true)){
+        public Libro findByIsbn(
+            @Parameter(description = "codigo ISBN del libro", required = true)
+            @PathVariable String isbn ){
+
             return libroService.findByIsbn(isbn);
         }   
 
@@ -94,7 +102,10 @@ public class LibroController {
         @ApiResponse(responseCode = "404", description = "Datos invalidos ")
     })
     @PostMapping
-    public Libro createLibro(@RequestBody Libro libro @Parameter(description = "Datos del libro", required = true)){
+    public Libro createLibro(
+        @Parameter(description = "Datos del libro", required = true)
+        @RequestBody Libro libro ){
+
         libro.setId(null); // libro.setId(null);
         return libroService.save(libro);
     }
@@ -105,7 +116,13 @@ public class LibroController {
         description = "Actualizar libro especificado por el numero de su ID "
     )
     @PutMapping("/{id}")
-    public Libro updateLibro(@PathVariable Integer id, @RequestBody Libro libro @Parameter(description = "ID del libro", required = true)){
+    public Libro updateLibro(
+        @Parameter(description = "ID del libro", required = true)
+        @PathVariable Integer id, 
+        
+        @Parameter(description = "Datos actualizados del libro", required = true)
+        @RequestBody Libro libro ){
+
         libro.setId(id); //libro.setId(id);
         return libroService.save(libro);
     }
@@ -121,7 +138,9 @@ public class LibroController {
         @ApiResponse(responseCode = "404", description = "Libro no encontrado ")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Integer id @Parameter(description = "ID del libro", required = true)){
+    public ResponseEntity<String> deleteById(
+        @Parameter(description = "ID del libro", required = true)
+        @PathVariable Integer id ){
 
         libroService.deleteById(id);
 
@@ -137,7 +156,10 @@ public class LibroController {
         description = "Devulve el libro dto por numero de ID "
     )
     @GetMapping("/dto/{id}")
-    public ResponseEntity<LibroDTO> getLibro(@PathVariable Integer id @Parameter(description = "ID del libro", required = true)) {
+    public ResponseEntity<LibroDTO> getLibro(
+        @Parameter(description = "ID del libro", required = true)
+        @PathVariable Integer id ) {
+
         return ResponseEntity.ok(libroService.findDtoById(id));
     }
 
@@ -147,7 +169,10 @@ public class LibroController {
         description = "Recibe LibroCreateDTO (entrada) y devuelve LibroDTO (salida) "
     )
     @PostMapping("/dto")
-    public ResponseEntity<LibroDTO> crearLibro(@Valid @RequestBody LibroCreateDTO dto @Parameter(description = "ID del libro", required = true)) {
+    public ResponseEntity<LibroDTO> crearLibro(
+        @Parameter(description = "Datos del libro", required = true)
+        @Valid @RequestBody LibroCreateDTO dto ) {
+
         LibroDTO creado = libroService.crearLibro(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
