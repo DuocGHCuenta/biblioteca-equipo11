@@ -15,6 +15,7 @@ import cl.duoc.segundo_modulo_api.client.LibroInventarioClient;
 import cl.duoc.segundo_modulo_api.dto.LibroCreateDTO;
 import cl.duoc.segundo_modulo_api.dto.LibroDTO;
 import cl.duoc.segundo_modulo_api.dto.LibroInventarioDTO;
+import cl.duoc.segundo_modulo_api.exception.RecursoNoEncontradoException;
 import cl.duoc.segundo_modulo_api.model.Libro;
 import cl.duoc.segundo_modulo_api.repository.LibroRepository;
 
@@ -42,7 +43,7 @@ public class LibroService {
 
     public Libro findById(Integer id){
         return libroRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+            .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
     }
 
     
@@ -50,14 +51,14 @@ public class LibroService {
 
     public Libro findByIsbn(String isbn){
         return libroRepository.findByIsbn(isbn)
-            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+            .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
     }
 
 
      public void deleteById(Integer id) {
 
         if (!libroRepository.existsById(id)) {
-            throw new RuntimeException("Libro no encontrado");
+            throw new RecursoNoEncontradoException("Libro no encontrado");
         }
 
         libroRepository.deleteById(id);
@@ -76,7 +77,7 @@ public class LibroService {
     public LibroDTO findDtoById(Integer id) {
 
         Libro l1 = libroRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+        .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
 
     
 
@@ -151,6 +152,8 @@ public class LibroService {
 
     // Eventos de negocio
     log.info("Cita creada exitosamente: id={}", libro.getId());
+
+    
 
 }
 

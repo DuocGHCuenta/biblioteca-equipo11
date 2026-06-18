@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cl.duoc.tercer_modulo_api.dto.LibroCreateDTO;
 import cl.duoc.tercer_modulo_api.dto.LibroDTO;
+import cl.duoc.tercer_modulo_api.exception.RecursoNoEncontradoException;
 import cl.duoc.tercer_modulo_api.model.Libro;
 import cl.duoc.tercer_modulo_api.repository.LibroRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,20 +28,20 @@ public class LibroService {
 
     public Libro findById(Integer id){
         return libroRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+            .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
     }
 
 
     public Libro findByIsbn(String isbn){
         return libroRepository.findByIsbn(isbn)
-            .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+            .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
     }
 
 
      public void deleteById(Integer id) {
 
         if (!libroRepository.existsById(id)) {
-            throw new RuntimeException("Libro no encontrado");
+            throw new RecursoNoEncontradoException("Libro no encontrado");
         }
 
         libroRepository.deleteById(id);
@@ -59,7 +60,7 @@ public class LibroService {
 
         Libro l1 = libroRepository.findById(id)
 
-        .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+        .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
 
             // throw new RecursoNoEncontradoException("Libro no encontrado");
             //.orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));

@@ -110,6 +110,7 @@ public class LibroController {
         return libroService.save(libro);
     }
 
+    
     //
     @Operation(
         summary = "Actualizar libro ID",
@@ -163,6 +164,7 @@ public class LibroController {
         return ResponseEntity.ok(libroService.findDtoById(id));
     }
 
+    
     // Recibe LibroCreateDTO (entrada) y devuelve LibroDTO (salida)
     @Operation(
         summary = "Recibir y devolver libros dto",

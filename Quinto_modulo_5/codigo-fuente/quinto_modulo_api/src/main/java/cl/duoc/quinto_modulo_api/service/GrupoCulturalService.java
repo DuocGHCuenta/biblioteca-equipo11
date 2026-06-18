@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import cl.duoc.quinto_modulo_api.dto.GrupoCulturalCreateDTO;
 import cl.duoc.quinto_modulo_api.dto.GrupoCulturalDTO;
+import cl.duoc.quinto_modulo_api.exception.RecursoNoEncontradoException;
 import cl.duoc.quinto_modulo_api.model.GrupoCultural;
 import cl.duoc.quinto_modulo_api.repository.GrupoCulturalRepository;
 
@@ -26,20 +27,20 @@ public class GrupoCulturalService {
 
     public GrupoCultural findById(Integer id){
         return grupoCulturalRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Club no encontrado"));
+        .orElseThrow(() -> new RecursoNoEncontradoException("Club no encontrado"));
     }
 
 
     public GrupoCultural findByNombre(String nombre){
         return grupoCulturalRepository.findByNombre(nombre)
-        .orElseThrow(() -> new RuntimeException("Club no encontrado"));
+        .orElseThrow(() -> new RecursoNoEncontradoException("Club no encontrado"));
     }
 
 
      public void deleteById(Integer id) {
 
         if (!grupoCulturalRepository.existsById(id)) {
-            throw new RuntimeException("Club no encontrado");
+            throw new RecursoNoEncontradoException("Club no encontrado");
         }
 
         grupoCulturalRepository.deleteById(id);
@@ -59,7 +60,7 @@ public class GrupoCulturalService {
 
         GrupoCultural l1 = grupoCulturalRepository.findById(id)
 
-        .orElseThrow(() -> new RuntimeException("Club no encontrado"));
+        .orElseThrow(() -> new RecursoNoEncontradoException("Club no encontrado"));
 
         return new GrupoCulturalDTO(
             l1.getId(),

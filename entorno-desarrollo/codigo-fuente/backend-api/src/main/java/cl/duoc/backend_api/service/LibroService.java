@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import cl.duoc.backend_api.dto.LibroCreateDTO;
 import cl.duoc.backend_api.dto.LibroDTO;
+import cl.duoc.backend_api.exception.RecursoNoEncontradoException;
 import cl.duoc.backend_api.model.Libro;
 import cl.duoc.backend_api.repository.LibroRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +29,14 @@ public class LibroService {
     public Libro findById(Integer id) {
 
         return libroRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
     }
 
     // Buscar libro DTO por ID
     public LibroDTO findDtoById(Integer id) {
 
         Libro l1 = libroRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
 
         return new LibroDTO(
                 l1.getId(),
@@ -52,14 +53,14 @@ public class LibroService {
     public Libro findByIsbn(String isbn) {
 
         return libroRepository.findByIsbn(isbn)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Libro no encontrado"));
     }
 
     // Eliminar libro por ID
     public void deleteById(Integer id) {
 
         if (!libroRepository.existsById(id)) {
-            throw new RuntimeException("Libro no encontrado");
+            throw new RecursoNoEncontradoException("Libro no encontrado");
         }
 
         libroRepository.deleteById(id);
@@ -86,6 +87,7 @@ public class LibroService {
         // Guardar en BD
         Libro guardado = libroRepository.save(p);
 
+        
         // Convertir entidad a DTO
         return new LibroDTO(
                 guardado.getId(),

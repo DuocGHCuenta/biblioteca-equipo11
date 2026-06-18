@@ -18,10 +18,19 @@ import cl.duoc.tercer_modulo_api.dto.LibroCreateDTO;
 import cl.duoc.tercer_modulo_api.dto.LibroDTO;
 import cl.duoc.tercer_modulo_api.model.Libro;
 import cl.duoc.tercer_modulo_api.service.LibroService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 //@Autowired
+
+@Tag(
+  name = "Libros Compra y Venta ",
+  description = "Gestion de comprar y vender libros "
+)
 @RestController
 
 @RequiredArgsConstructor
@@ -35,6 +44,11 @@ public class LibroController {
 
 
     // tener una lista de todos
+    @Operation(
+        summary = "Listar libros ",
+        description = "Devuelve una lista de todos lo libros y en que estado estan "
+    )
+    @ApiResponse(responseCode = "200", description = "Lista de libros obtenida exitosamente")
     @GetMapping()
     public List <Libro> findAll(){
         return libroService.findAll();
@@ -43,13 +57,29 @@ public class LibroController {
 
 
     // Buscar y obtener por la id del libro
+    @Operation(
+        summary = "Buscar libro ID ",
+        description = "Buscar y encontrar un libro especificado por el numero de su ID "
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Libro encontrado"),
+        @ApiResponse(responseCode = "404", description = "Libro no encontrado")
+    })
     @GetMapping("{id}")
         public Libro findById (@PathVariable Integer id){
             return libroService.findById(id);
         }
 
 
-        // Encontrarlo por el isbn del libro
+    // Encontrarlo por el isbn del libro
+    @Operation(
+        summary = "Buscar libro ISBN ",
+        description = "Buscar y encontrar un libro especificado por su codigo ISBN "
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Libro encontrado"),
+        @ApiResponse(responseCode = "404", description = "Libro no encontrado")
+    })
      @GetMapping("/isbn/{isbn}")
         public Libro findByIsbn (@PathVariable String isbn){
             return libroService.findByIsbn(isbn);
@@ -58,6 +88,14 @@ public class LibroController {
     
 
     // Agregar un libro a la libreria
+    @Operation(
+        summary = "Agregar libro ",
+        description = "Agregar un libro mas a la libreria "
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Libro agregado exitosamente "),
+        @ApiResponse(responseCode = "404", description = "Datos invalidos ")
+    })
     @PostMapping
     public Libro createLibro(@RequestBody Libro libro){
         libro.setId(null); // libro.setId(null);
@@ -65,6 +103,10 @@ public class LibroController {
     }
 
 
+    @Operation(
+        summary = "Actualizar libro ID",
+        description = "Actualizar libro especificado por el numero de su ID "
+    )
     @PutMapping("/{id}")
     public Libro updateLibro(@PathVariable Integer id, @RequestBody Libro libro){
         libro.setId(id); //libro.setId(id);
@@ -73,6 +115,14 @@ public class LibroController {
 
 
     // Eliminar un libro
+    @Operation(
+        summary = "Eliminar libro ",
+        description = "Eliminar un libro especificado por el numero de su ID, quitandolo de la libreria "
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Libro eliminado exitosamente "),
+        @ApiResponse(responseCode = "404", description = "Libro no encontrado ")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Integer id){
 
@@ -83,15 +133,22 @@ public class LibroController {
 
 
 
-
-
     // Devuelve LibroDTO (salida)
+    @Operation(
+        summary = "Devuelve libro dto ",
+        description = "Devulve el libro dto por numero de ID "
+    )
     @GetMapping("/dto/{id}")
     public ResponseEntity<LibroDTO> getLibro(@PathVariable Integer id) {
         return ResponseEntity.ok(libroService.findDtoById(id));
     }
 
+
     // Recibe LibroCreateDTO (entrada) y devuelve LibroDTO (salida)
+    @Operation(
+        summary = "Recibir y devolver libros dto",
+        description = "Recibe LibroCreateDTO (entrada) y devuelve LibroDTO (salida) "
+    )
     @PostMapping("/dto")
     public ResponseEntity<LibroDTO> crearLibro(
             @Valid @RequestBody LibroCreateDTO dto) {
