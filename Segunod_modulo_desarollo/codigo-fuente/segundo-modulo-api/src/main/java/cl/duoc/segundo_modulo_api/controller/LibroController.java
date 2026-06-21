@@ -34,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 
+//      http://localhost:8181/doc/swagger-ui/index.html#/
+
 @RequestMapping("/api/v1/prestarlibrosconplazo")
 public class LibroController {
 
